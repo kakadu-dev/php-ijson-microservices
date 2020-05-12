@@ -7,7 +7,7 @@
 
 namespace Kakadu\Microservices;
 
-use console\microservice\interfaces\ILogDriver;
+use Kakadu\Microservices\interfaces\ILogDriver;
 
 /**
  * Class    ConsoleLogDriver

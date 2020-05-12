@@ -7,7 +7,7 @@
 
 namespace Kakadu\Microservices;
 
-use console\microservice\exceptions\BaseException;
+use Kakadu\Microservices\exceptions\BaseException;
 
 /**
  * Class    MjResponse

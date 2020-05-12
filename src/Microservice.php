@@ -7,8 +7,8 @@
 
 namespace Kakadu\Microservices;
 
-use console\microservice\exceptions\MicroserviceException;
-use console\microservice\interfaces\ILogDriver;
+use Kakadu\Microservices\exceptions\MicroserviceException;
+use Kakadu\Microservices\interfaces\ILogDriver;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\BadResponseException;
 
