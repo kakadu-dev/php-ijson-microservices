@@ -1,0 +1,53 @@
+{
+    "name": "kakadu-dev/php-ijson-microservices",
+    "description": "Package for create microservice architecture based on PHP.",
+    "homepage": "https://github.com/kakadu-dev/php-ijson-microservices",
+    "type": "library",
+    "keywords": [
+        "micro",
+        "microservice",
+        "php74",
+        "architicture",
+        "gateway",
+        "ijson",
+        "inverted",
+        "json"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yarmaliuk Mikhail",
+            "email": "lukomi@mail.ru",
+            "role": "Lead Software Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "php": ">=7.4.0",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Kakadu\\Microservices\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kakadu\\Microservices\\tests\\": "tests/"
+        }
+    }
+}
