@@ -1,5 +1,7 @@
 # PHP 7.4 Inverted JSON Microservices
 
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/kakadu-dev/php-ijson-microservices)
+
  - ~~Gateway entrypoint~~ (in-progress)
  - Microservice worker
 
