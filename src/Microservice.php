@@ -7,10 +7,10 @@
 
 namespace Kakadu\Microservices;
 
-use Kakadu\Microservices\exceptions\MicroserviceException;
-use Kakadu\Microservices\interfaces\ILogDriver;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\BadResponseException;
+use Kakadu\Microservices\exceptions\MicroserviceException;
+use Kakadu\Microservices\interfaces\ILogDriver;
 
 /**
  * Class    Microservice
@@ -225,6 +225,10 @@ class Microservice
                     $excpt = new MicroserviceException($message);
                     $excpt->setStatus(1);
 
+                    if ($this->isDev()) {
+                        print_r("\e[31m" . $exception->getTraceAsString() . "\n");
+                    }
+
                     $response['error'] = $excpt;
                 }
             }
@@ -284,5 +288,17 @@ class Microservice
 
             return $expt;
         }
+    }
+
+    /**
+     * Is development environment
+     *
+     * @return bool
+     */
+    protected function isDev(): bool
+    {
+        $env = $this->options['env'];
+
+        return substr('development', 0, strlen($env)) === $env;
     }
 }
