@@ -260,13 +260,13 @@ class Microservice
                 'body'    => $response,
             ]);
 
-            $rawBody = $resp->getBody();
-            $body    = json_decode($rawBody->getContents(), true);
+            $body    = json_decode($resp->getBody()->getContents(), true);
+            $logBody = json_encode($body, JSON_UNESCAPED_UNICODE);
 
             $id   = $body['id'] ?? 0;
             $from = $body['params']['payload']['sender'] ?? 'Client';
 
-            $this->logDriver->log("--> Request ($id) from $from: $rawBody", 0, $id);
+            $this->logDriver->log("--> Request ($id) from $from: $logBody", 0, $id);
 
             return $body;
         } catch (BadResponseException $exception) {
