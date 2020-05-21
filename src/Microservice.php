@@ -203,7 +203,7 @@ class Microservice
      */
     public function start(\Closure $clb): void
     {
-        echo "$this->name microservice started. Version: {$this->options['version']} ({$this->options['env']})\n";
+        echo "\e[0m$this->name microservice started. Version: {$this->options['version']} ({$this->options['env']})\n";
 
         $request = $this->handleClientRequest();
 
