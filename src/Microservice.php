@@ -154,7 +154,7 @@ class Microservice
             $response    = json_decode($rawResponse->getContents(), true);
 
             if (!empty($response['error'])) {
-                throw new MicroserviceException($response['error']);
+                throw new MicroserviceException($response['error']['message'] ?? 'Unknown error.');
             }
 
             return new MjResponse($response);
