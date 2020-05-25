@@ -157,7 +157,7 @@ class Microservice
                 throw new MicroserviceException($response['error']['message'] ?? 'Unknown error.');
             }
 
-            return new MjResponse($response);
+            return new MjResponse($response ?? []);
         } catch (BadResponseException $exception) {
             $errMessage = $exception->getMessage();
             $errStatus  = 4;
