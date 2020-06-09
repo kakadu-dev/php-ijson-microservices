@@ -69,11 +69,7 @@ class Microservice
             $this->logDriver = new ConsoleLogDriver(!$logDriver);
         }
 
-        $this->_httpClient = new HttpClient([
-            'base_uri' => $this->options['ijson'],
-            'timeout'  => 0,
-            'headers'  => ['Content-Type' => 'application/json'],
-        ]);
+        $this->_httpClient = $this->createHttpClient();
     }
 
     protected function __clone()
@@ -93,6 +89,20 @@ class Microservice
     public static function getInstance(): Microservice
     {
         return self::$_instance;
+    }
+
+    /**
+     * Create http client
+     *
+     * @return HttpClient
+     */
+    private function createHttpClient(): HttpClient
+    {
+        return new HttpClient([
+            'base_uri' => $this->options['ijson'],
+            'timeout'  => 0,
+            'headers'  => ['Content-Type' => 'application/json'],
+        ]);
     }
 
     /**
@@ -146,7 +156,7 @@ class Microservice
         try {
             $this->logDriver->log("    --> Request ($logMethod - {$request->getId()}): $request", 2, $request->getId());
 
-            $resp        = $this->_httpClient->request('POST', "/$service", array_merge([
+            $resp        = $this->createHttpClient()->request('POST', "/$service", array_merge([
                 'timeout' => $this->options['requestTimeout'],
                 'body'    => $request,
             ], $requestConf));
