@@ -63,6 +63,8 @@ class Microservice
         $this->name    = $name;
         $this->options = array_merge($this->options, array_filter($options));
 
+        MicroserviceException::$service = $name;
+
         if ($logDriver instanceof ILogDriver) {
             $this->logDriver = $logDriver;
         } else {
