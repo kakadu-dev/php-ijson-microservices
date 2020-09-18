@@ -63,6 +63,9 @@ class Microservice
         $this->name    = $name;
         $this->options = array_merge($this->options, array_filter($options));
 
+        // Detect SRV host
+        $this->expandSrv();
+
         MicroserviceException::$service = $name;
 
         if ($logDriver instanceof ILogDriver) {
@@ -72,6 +75,45 @@ class Microservice
         }
 
         $this->_httpClient = $this->createHttpClient();
+    }
+
+    /**
+     * Detect SRV record and get dns record
+     *
+     * @return void
+     */
+    private function expandSrv(): void
+    {
+        if (substr($this->options['ijson'], -4) !== '.srv') {
+            return;
+        }
+
+        $part       = explode('://', $this->options['ijson']);
+        $srvRecords = dns_get_record($part[1], DNS_SRV);
+
+        // Sort
+        $priority = array_column($srvRecords, 'pri');
+        $weight   = array_column($srvRecords, 'weight');
+        array_multisort($priority, SORT_ASC, $weight, SORT_ASC, $srvRecords);
+
+        $host = $srvRecords[0]['target'] ?? null;
+        $port = $srvRecords[0]['port'] ?? null;
+
+        $this->options['ijson'] = "$part[0]://$host:$port";
+    }
+
+    /**
+     * Create http client
+     *
+     * @return HttpClient
+     */
+    private function createHttpClient(): HttpClient
+    {
+        return new HttpClient([
+            'base_uri' => $this->options['ijson'],
+            'timeout'  => 0,
+            'headers'  => ['Content-Type' => 'application/json'],
+        ]);
     }
 
     protected function __clone()
@@ -91,20 +133,6 @@ class Microservice
     public static function getInstance(): Microservice
     {
         return self::$_instance;
-    }
-
-    /**
-     * Create http client
-     *
-     * @return HttpClient
-     */
-    private function createHttpClient(): HttpClient
-    {
-        return new HttpClient([
-            'base_uri' => $this->options['ijson'],
-            'timeout'  => 0,
-            'headers'  => ['Content-Type' => 'application/json'],
-        ]);
     }
 
     /**
