@@ -89,7 +89,7 @@ class Microservice
         }
 
         $part       = explode('://', $this->options['ijson']);
-        $srvRecords = dns_get_record($part[1], DNS_SRV);
+        $srvRecords = dns_get_record(preg_replace('/\.srv$/', '', $part[1]), DNS_SRV);
 
         // Sort
         $priority = array_column($srvRecords, 'pri');

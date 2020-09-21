@@ -1,6 +1,6 @@
 {
     "name": "kakadu-dev/php-ijson-microservices",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Package for create microservice architecture based on PHP.",
     "homepage": "https://github.com/kakadu-dev/php-ijson-microservices",
     "type": "library",
