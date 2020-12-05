@@ -36,7 +36,7 @@ class ConsoleLogDriver implements ILogDriver
     /**
      * @inheritDoc
      */
-    public function log(string $message, string $type, $id): void
+    public function log(string $message, string $type, $id = null): void
     {
         if ($this->dummy) {
             return;
@@ -61,6 +61,10 @@ class ConsoleLogDriver implements ILogDriver
             case 2:
             case 3:
                 $color = "\e[34m"; // blue
+            break;
+
+            case 4:
+                $color = "\e[31m"; // red
             break;
         }
 
