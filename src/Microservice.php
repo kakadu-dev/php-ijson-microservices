@@ -248,6 +248,8 @@ class Microservice
         $request = $this->handleClientRequest();
 
         while (true) {
+            $memoryBeginIteration = memory_get_usage(false);
+
             $response = [];
 
             if ($requestId = $request['id'] ?? null) {
@@ -278,6 +280,14 @@ class Microservice
             $this->logDriver->log("<-- Response ({$rsp->getId()}): $rsp", 1, $rsp->getId());
 
             $request = $this->handleClientRequest($rsp, false);
+
+            gc_collect_cycles();
+
+            $memoryLeak = (int) memory_get_usage(false) - (int) $memoryBeginIteration;
+            if ($memoryLeak > 0 ) {
+                $this->logDriver->log("!!! Your microservice has memory leak. Lost: {$this->getMemoryLeakSize($memoryLeak)}", 4);
+            }
+            unset($start, $memoryLeak);
         }
     }
 
@@ -340,5 +350,28 @@ class Microservice
         $env = $this->options['env'];
 
         return substr('development', 0, strlen($env)) === $env;
+    }
+
+    /**
+     * convert memory leak size
+     *
+     * @param $bytes
+     *
+     * @return string
+     */
+    function getMemoryLeakSize($bytes)
+    {
+        if ( $bytes < 1000 * 1024 ) {
+            return number_format( $bytes / 1024, 2 ) . " KB";
+        }
+        elseif ( $bytes < 1000 * 1048576 ) {
+            return number_format( $bytes / 1048576, 2 ) . " MB";
+        }
+        elseif ( $bytes < 1000 * 1073741824 ) {
+            return number_format( $bytes / 1073741824, 2 ) . " GB";
+        }
+        else {
+            return number_format( $bytes / 1099511627776, 2 ) . " TB";
+        }
     }
 }
